@@ -123,6 +123,3 @@ if __name__ == '__main__':
     saloon(Standard_Food())
     print("\n-----------------------------------\nДешёвая еда:\n")
     saloon(Cheap_Food())
-
-
-
