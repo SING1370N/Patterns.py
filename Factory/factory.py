@@ -30,9 +30,7 @@ class Cook(ABC):
                 product.time_cooking = strftime("%M:%S", gmtime(time_cooking)) + " м."
         else:
             product.time_cooking = strftime("%S", gmtime(time_cooking)) + " c."
-
         result = f"Готовим {product.operation()} "
-
         return result
 
 
