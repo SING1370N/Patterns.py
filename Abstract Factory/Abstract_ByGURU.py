@@ -99,8 +99,6 @@ class AbstractProductB(ABC):
 """
 Конкретные Продукты создаются соответствующими Конкретными Фабриками.
 """
-
-
 class ConcreteProductB1(AbstractProductB):
     def useful_function_b(self) -> str:
         return "The result of the product B1."
