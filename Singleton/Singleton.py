@@ -14,9 +14,9 @@ class Menu:
 
     def addPackObject(self, Num=4):
         for i in range(1, Num):
-            self._servers.append("Продукт " + str(i))
+            self._servers.append("Блюдо " + str(i))
 
-    def Magic(self, Name="Добавка"):
+    def Magic(self, Name="Чай"):
         self._servers.pop()
         self._servers.append(Name)
 
