@@ -10,7 +10,7 @@ class MySingleton(object):
     # Используйте cls для первого аргумента для методов класса.
 
     def __new__(cls):
-        """Create a new instance"""
+        """Создание нового экзмепляра"""
         if MySingleton._instance is None:
             with MySingleton._lock:
                 if MySingleton._instance is None:
@@ -24,9 +24,7 @@ class MySingleton(object):
         if self._initialized is False:
             self._logger = logging.getLogger(self.__class__.__name__)
             self._count = 0
-
             self._initialized = True
-
         self._logger.debug("using instance: %s" % self._instance)
 
     def increment(self):
