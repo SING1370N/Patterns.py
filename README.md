@@ -4,10 +4,11 @@
 Список из 22-х классических паттернов, сгруппированых по предназначению. 
 
 
-**Порождающие** - отвечают за удобное и безопасное создание новых объектов или даже целых семейств объектов.
+#**Порождающие** 
+ Отвечают за удобное и безопасное создание новых объектов или даже целых семейств объектов.
 
- 1. Фабричный метод (Factory Method)
- 2. Абстрактная фабрика(Abstract Factory)
- 3. Строитель(Builder)
- 4. Прототип(Prototype)
- 5. Одиночка(Singleton)
+ * [Фабричный метод (Factory Method)](https://refactoring.guru/ru/design-patterns/factory-method)
+ * [Абстрактная фабрика(Abstract Factory)](https://refactoring.guru/ru/design-patterns/abstract-factory)
+ * [Строитель(Builder)](https://refactoring.guru/ru/design-patterns/builder)
+ * [Прототип(Prototype)](https://refactoring.guru/ru/design-patterns/prototype)
+ * [Одиночка(Singleton)](https://refactoring.guru/ru/design-patterns/singleton)
