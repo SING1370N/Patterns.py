@@ -1,29 +1,44 @@
+class Menu:
+    _instance = None
 
-class SingletonMeta(type):
-    """ В Python класс Одиночка можно реализовать по-разному.
-    Возможные способы включают себя базовый класс, декоратор,
-    метакласс. Мы воспользуемся метаклассом, поскольку он лучше
-    всего подходит для этой цели. """
-    _instances = {}
+    def __new__(cls, *args, **kwargs):
+        if not Menu._instance:
+            Menu._instance = super(Menu, cls).__new__(cls, *args, **kwargs)
+        return Menu._instance
 
-    def __call__(cls, *args, **kwargs):
-        """ Данная реализация не учитывает возможное изменение
-        передаваемых аргументов в `__init__`. """
-        if cls not in cls._instances:
-            instance = super().__call__(*args, **kwargs)
-            cls._instances[cls] = instance
-            return cls._instances[cls]
+    def __init__(self):
+        self._servers = []
 
-class Singleton(metaclass=SingletonMeta):
-    def some_business_logic(self):
-        """ Наконец, любой одиночка должен содержать
-        некоторую бизнес-логику, которая может быть
-        выполнена на его экземпляре. """
+    def addObject(self, NameObj):
+        self._servers.append(NameObj)
 
-if __name__ == "__main__":
-    s1 = Singleton()
-    s2 = Singleton()
-    if id(s1) == id(s2):
-        print("Обе переменных содержат один и тот же экземпляр.")
-    else:
-        print("Ошибка, переменные содержат разные экземпляры.")
+    def addPackObject(self, Num=4):
+        for i in range(1, Num):
+            self._servers.append("Продукт " + str(i))
+
+    def Magic(self, Name="Добавка"):
+        self._servers.pop()
+        self._servers.append(Name)
+
+
+def see(OBJ):
+    for i in range(len(OBJ._servers)):
+        print(" ", OBJ._servers[i])
+
+
+T1 = Menu()
+T2 = Menu()
+T3 = Menu()
+
+T1.addPackObject(6)
+
+print("Проверка переменной 1:")
+see(T1)
+
+T2.Magic()
+
+print("\nПроверка переменной 2:")
+see(T2)
+
+print("\n", T1, "\n", T2, "\n", T3, sep='')
+print("Однин и тот же:", T1 == T2 == T3)
