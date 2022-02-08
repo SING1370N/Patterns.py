@@ -1,44 +1,43 @@
-class Menu:
-    _instance = None
+import logging
+import threading
 
-    def __new__(cls, *args, **kwargs):
-        if not Menu._instance:
-            Menu._instance = super(Menu, cls).__new__(cls, *args, **kwargs)
-        return Menu._instance
+
+class MySingleton(object):
+    _instance: object = None
+    _lock: threading.Lock = threading.Lock()
+
+    # Используйте self для первого аргумента для методов экземпляра.
+    # Используйте cls для первого аргумента для методов класса.
+
+    def __new__(cls):
+        """Create a new instance"""
+        if MySingleton._instance is None:
+            with MySingleton._lock:
+                if MySingleton._instance is None:
+                    MySingleton._instance = super(MySingleton, cls).__new__(cls)
+                    MySingleton._instance._initialized = False
+
+        return MySingleton._instance
 
     def __init__(self):
-        self._servers = []
+        """Initialize the instance"""
+        if self._initialized is False:
+            self._logger = logging.getLogger(self.__class__.__name__)
+            self._count = 0
 
-    def addObject(self, NameObj):
-        self._servers.append(NameObj)
+            self._initialized = True
 
-    def addPackObject(self, Num=4):
-        for i in range(1, Num):
-            self._servers.append("Продукт " + str(i))
+        self._logger.debug("using instance: %s" % self._instance)
 
-    def Magic(self, Name="Добавка"):
-        self._servers.pop()
-        self._servers.append(Name)
+    def increment(self):
+        """Increment the counter"""
+        self._count += 1
+        self._logger.debug("count = %d" % self._count)
 
-
-def see(OBJ):
-    for i in range(len(OBJ._servers)):
-        print(" ", OBJ._servers[i])
-
-
-T1 = Menu()
-T2 = Menu()
-T3 = Menu()
-
-T1.addPackObject(6)
-
-print("Проверка переменной 1:")
-see(T1)
-
-T2.Magic()
-
-print("\nПроверка переменной 2:")
-see(T2)
-
-print("\n", T1, "\n", T2, "\n", T3, sep='')
-print("Однин и тот же:", T1 == T2 == T3)
+if  __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG, handlers=[logging.StreamHandler()])
+    a = MySingleton()
+    b = MySingleton()
+    a.increment()
+    a.increment()
+    b.increment()
