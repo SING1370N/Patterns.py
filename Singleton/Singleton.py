@@ -1,6 +1,9 @@
 class Menu:
     _instance = None
 
+    # Используйте self для первого аргумента для методов экземпляра.
+    # Используйте cls для первого аргумента для методов класса.
+
     def __new__(cls, *args, **kwargs):
         if not Menu._instance:
             Menu._instance = super(Menu, cls).__new__(cls, *args, **kwargs)
@@ -16,7 +19,7 @@ class Menu:
         for i in range(1, Num):
             self._servers.append("Блюдо " + str(i))
 
-    def Magic(self, Name="Чай"):
+    def Example(self, Name="Чай"):
         self._servers.pop()
         self._servers.append(Name)
 
@@ -26,19 +29,20 @@ def see(OBJ):
         print(" ", OBJ._servers[i])
 
 
-T1 = Menu()
-T2 = Menu()
-T3 = Menu()
+if __name__ == "__main__":
+    T1 = Menu()
+    T2 = Menu()
+    T3 = Menu()
 
-T1.addPackObject(6)
+    T1.addPackObject(6)
 
-print("Проверка переменной 1:")
-see(T1)
+    print("Проверка меню 1:")
+    see(T1)
 
-T2.Magic()
+    T2.Example()
 
-print("\nПроверка переменной 2:")
-see(T2)
+    print("\nПроверка меню 2:")
+    see(T2)
 
-print("\n", T1, "\n", T2, "\n", T3, sep='')
-print("Однин и тот же:", T1 == T2 == T3)
+    print("\n", T1, "\n", T2, "\n", T3, sep='')
+    print("Однин и тот же:", T1 == T2 == T3)
