@@ -41,9 +41,10 @@ if __name__ == "__main__":
 
     T2.Example()
 
-    print("\nПроверка меню 2:")
+    print("\nПроверка меню 2 после изменения:")
     see(T2)
 
+    print("\nПроверка меню:")
     print("\n", T1, "\n", T2, "\n", T3, sep='')
     print("Однин и тот же:", T1 == T2 == T3)
     print("", id(T1), id(T2), id(T3), sep="\n")
