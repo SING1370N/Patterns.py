@@ -2,37 +2,29 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any
 
-
-class Builder(ABC):
-    """
-    Интерфейс Строителя объявляет создающие методы для различных частей объектов
-    Продуктов.
-    """
+# Строитель - объявляет создающие методы для различных частей
+class Cooking(ABC):
 
     @property
     @abstractmethod
-    def product(self) -> None:
+    def ingredient(self) -> None:
         pass
 
     @abstractmethod
-    def produce_part_a(self) -> None:
+    def sausage(self) -> None:
         pass
 
     @abstractmethod
-    def produce_part_b(self) -> None:
+    def cheese(self) -> None:
         pass
 
     @abstractmethod
-    def produce_part_c(self) -> None:
+    def pineapples(self) -> None:
         pass
 
 
-class ConcreteBuilder1(Builder):
-    """
-    Классы Конкретного Строителя следуют интерфейсу Строителя и предоставляют
-    конкретные реализации шагов построения. Ваша программа может иметь несколько
-    вариантов Строителей, реализованных по-разному.
-    """
+
+class ConcreteCooking(Cooking):
 
     def __init__(self) -> None:
         """
@@ -42,40 +34,26 @@ class ConcreteBuilder1(Builder):
         self.reset()
 
     def reset(self) -> None:
-        self._product = Product1()
+        self._product = Food()
 
     @property
-    def product(self) -> Product1:
-        """
-        Конкретные Строители должны предоставить свои собственные методы
-        получения результатов. Это связано с тем, что различные типы строителей
-        могут создавать совершенно разные продукты с разными интерфейсами.
-        Поэтому такие методы не могут быть объявлены в базовом интерфейсе
-        Строителя (по крайней мере, в статически типизированном языке
-        программирования).
+    def ingredient(self) -> Food:
 
-        Как правило, после возвращения конечного результата клиенту, экземпляр
-        строителя должен быть готов к началу производства следующего продукта.
-        Поэтому обычной практикой является вызов метода сброса в конце тела
-        метода getProduct. Однако такое поведение не является обязательным, вы
-        можете заставить своих строителей ждать явного запроса на сброс из кода
-        клиента, прежде чем избавиться от предыдущего результата.
-        """
         product = self._product
         self.reset()
         return product
 
-    def produce_part_a(self) -> None:
-        self._product.add("PartA1")
+    def sausage(self) -> None:
+        self._product.add("колбаска")
 
-    def produce_part_b(self) -> None:
-        self._product.add("PartB1")
+    def cheese(self) -> None:
+        self._product.add("сыр")
 
-    def produce_part_c(self) -> None:
-        self._product.add("PartC1")
+    def pineapples(self) -> None:
+        self._product.add("ананасы")
 
 
-class Product1():
+class Food:
     """
     Имеет смысл использовать паттерн Строитель только тогда, когда ваши продукты
     достаточно сложны и требуют обширной конфигурации.
@@ -91,27 +69,22 @@ class Product1():
     def add(self, part: Any) -> None:
         self.parts.append(part)
 
-    def list_parts(self) -> None:
-        print(f"Product parts: {', '.join(self.parts)}", end="")
+    def list_ingredient(self) -> None:
+        print(f"Части продукта: {', '.join(self.parts)}", end="")
 
 
-class Director:
-    """
-    Директор отвечает только за выполнение шагов построения в определённой
-    последовательности. Это полезно при производстве продуктов в определённом
-    порядке или особой конфигурации. Строго говоря, класс Директор необязателен,
-    так как клиент может напрямую управлять строителями.
-    """
+#   Повар отвечает только за выполнение шагов приготовления (необязателен, так как клиент может готовить сам)
+class Cook:
 
     def __init__(self) -> None:
         self._builder = None
 
     @property
-    def builder(self) -> Builder:
+    def builder(self) -> Cooking:
         return self._builder
 
     @builder.setter
-    def builder(self, builder: Builder) -> None:
+    def builder(self, builder: Cooking) -> None:
         """
         Директор работает с любым экземпляром строителя, который передаётся ему
         клиентским кодом. Таким образом, клиентский код может изменить конечный
@@ -119,18 +92,13 @@ class Director:
         """
         self._builder = builder
 
-    """
-    Директор может строить несколько вариаций продукта, используя одинаковые
-    шаги построения.
-    """
+    def cooking_pizza_home(self) -> None:
+        self.builder.sausage()
 
-    def build_minimal_viable_product(self) -> None:
-        self.builder.produce_part_a()
-
-    def build_full_featured_product(self) -> None:
-        self.builder.produce_part_a()
-        self.builder.produce_part_b()
-        self.builder.produce_part_c()
+    def cooking_pizza_major(self) -> None:
+        self.builder.sausage()
+        self.builder.cheese()
+        self.builder.pineapples()
 
 
 if __name__ == "__main__":
@@ -140,24 +108,24 @@ if __name__ == "__main__":
     строителя.
     """
 
-    director = Director()
-    builder = ConcreteBuilder1()
-    director.builder = builder
+    cook = Cook()
+    cooking = ConcreteCooking()
+    cook.builder = cooking
 
-    print("Standard basic product: ")
-    director.build_minimal_viable_product()
-    builder.product.list_parts()
-
-    print("\n")
-
-    print("Standard full featured product: ")
-    director.build_full_featured_product()
-    builder.product.list_parts()
+    print("Пицца домашняя:")
+    cook.cooking_pizza_home()
+    cooking.ingredient.list_ingredient()
 
     print("\n")
 
-    # Помните, что паттерн Строитель можно использовать без класса Директор.
-    print("Custom product: ")
-    builder.produce_part_a()
-    builder.produce_part_b()
-    builder.product.list_parts()
+    print("Пицца Мажор:")
+    cook.cooking_pizza_major()
+    cooking.ingredient.list_ingredient()
+
+    print("\n")
+
+    # Строитель без класса Директор.
+    print("Пицца <<Сделай сам>>:")
+    cooking.sausage()
+    cooking.cheese()
+    cooking.ingredient.list_ingredient()
