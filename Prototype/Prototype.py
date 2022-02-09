@@ -3,7 +3,7 @@ import copy
 
 class SelfReferencingEntity:
     def __init__(self):
-        self.parent = None
+        self.parent = None  # Родитель
 
     def set_parent(self, parent):
         self.parent = parent
@@ -28,12 +28,12 @@ class SomeComponent:
          Новая неглубокая копия.
         """
 
-        # First, let's create copies of the nested objects.
+        # Во-первых, давайте создадим копии вложенных объектов.
         some_list_of_objects = copy.copy(self.some_list_of_objects)
         some_circular_ref = copy.copy(self.some_circular_ref)
 
-        # Then, let's clone the object itself, using the prepared clones of the
-        # nested objects.
+        # Затем давайте клонировать сам объект, используя подготовленные клоны
+        # вложенные объекты.
         new = self.__class__(
             self.some_int, some_list_of_objects, some_circular_ref
         )
@@ -56,12 +56,12 @@ class SomeComponent:
         if memo is None:
             memo = {}
 
-        # First, let's create copies of the nested objects.
+        # Во-первых, давайте создадим копии вложенных объектов.
         some_list_of_objects = copy.deepcopy(self.some_list_of_objects, memo)
         some_circular_ref = copy.deepcopy(self.some_circular_ref, memo)
 
-        # Then, let's clone the object itself, using the prepared clones of the
-        # nested objects.
+        # Затем давайте клонировать сам объект, используя подготовленные клоны
+        # вложенные объекты.
         new = self.__class__(
             self.some_int, some_list_of_objects, some_circular_ref
         )
@@ -79,8 +79,7 @@ if __name__ == "__main__":
 
     shallow_copied_component = copy.copy(component)
 
-    # Let's change the list in shallow_copied_component and see if it changes in
-    # component.
+    # Давайте изменим список на shallow_copied_component и посмотреть, изменяется ли он в компонент.
     shallow_copied_component.some_list_of_objects.append("другой объект")
     if component.some_list_of_objects[-1] == "другой объект":
         print(
@@ -95,7 +94,7 @@ if __name__ == "__main__":
             "some_list_of_objects."
         )
 
-    # Let's change the set in the list of objects.
+    # Давайте изменим набор в списке объектов.
     component.some_list_of_objects[1].add(4)
     if 4 in shallow_copied_component.some_list_of_objects[1]:
         print(
@@ -112,8 +111,7 @@ if __name__ == "__main__":
 
     deep_copied_component = copy.deepcopy(component)
 
-    # Let's change the list in deep_copied_component and see if it changes in
-    # component.
+    # Давайте изменим список в Deep_copied_Component и посмотрите, изменяется ли он в компонент.
     deep_copied_component.some_list_of_objects.append("еще один объект")
     if component.some_list_of_objects[-1] == "еще один объект":
         print(
@@ -128,7 +126,7 @@ if __name__ == "__main__":
             "some_list_of_objects."
         )
 
-    # Let's change the set in the list of objects.
+    # Давайте изменим набор в списке объектов.
     component.some_list_of_objects[1].add(10)
     if 10 in deep_copied_component.some_list_of_objects[1]:
         print(
