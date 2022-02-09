@@ -72,9 +72,9 @@ class SomeComponent:
 
 if __name__ == "__main__":
 
-    list_of_objects = [1, {1, 2, 3}, [1, 2, 3]]
+    MenuList = ["Пицца", "X", "Чай", "Стейк"]
     circular_ref = SelfReferencingEntity()
-    component = SomeComponent(23, list_of_objects, circular_ref)
+    component = SomeComponent(23, MenuList, circular_ref)
     circular_ref.set_parent(component)
 
     shallow_copied_component = copy.copy(component)
@@ -95,8 +95,8 @@ if __name__ == "__main__":
         )
 
     # Давайте изменим набор в списке объектов.
-    component.some_list_of_objects[1].add(4)
-    if 4 in shallow_copied_component.some_list_of_objects[1]:
+    component.some_list_of_objects[1] = "AAA"
+    if "AAA" in shallow_copied_component.some_list_of_objects[1]:
         print(
             "Изменение объектов в `component`'s some_list_of_objects "
             "изменяет этот объект в`shallow_copied_component`'s "
@@ -127,8 +127,8 @@ if __name__ == "__main__":
         )
 
     # Давайте изменим набор в списке объектов.
-    component.some_list_of_objects[1].add(10)
-    if 10 in deep_copied_component.some_list_of_objects[1]:
+    component.some_list_of_objects[1] = "ZZZ"
+    if "ZZZ" in deep_copied_component.some_list_of_objects[1]:
         print(
             "Изменение объектов в `component`'s some_list_of_objects "
             "изменяет этот объект в `deep_copied_component`'s "
@@ -142,14 +142,9 @@ if __name__ == "__main__":
         )
 
     print(
-        f"id(deep_copied_component.some_circular_ref.parent): "
-        f"{id(deep_copied_component.some_circular_ref.parent)}"
-    )
-    print(
-        f"id(deep_copied_component.some_circular_ref.parent.some_circular_ref.parent): "
-        f"{id(deep_copied_component.some_circular_ref.parent.some_circular_ref.parent)}"
-    )
-    print(
-        "^^ Это показывает, что глубокие объекты содержат одинаковую ссылку, они "
-        "несколько раз не клонированы. "
+        f"\n--- DeepCopy ---\nИндификатор объекта: "
+        f"{id(deep_copied_component.some_circular_ref.parent)}\n"
+        f"Индификатор объекта: "
+        f"{id(deep_copied_component.some_circular_ref.parent.some_circular_ref.parent)}\n"
+        f"Глубокие объекты содержат одинаковую ссылку, несколько раз не клонированы"
     )
