@@ -23,7 +23,6 @@ class Menu:
         self._servers.pop()
         self._servers.append(Name)
 
-
 def see(OBJ):
 
     for i in range(len(OBJ._servers)):
