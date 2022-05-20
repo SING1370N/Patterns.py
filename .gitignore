@@ -1,0 +1,6 @@
+/.idea
+/Lib
+/Scripts
+*.bkp
+*.dtmp
+pyvenv.cfg
