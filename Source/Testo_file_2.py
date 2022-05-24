@@ -1,13 +1,8 @@
-x = 25
-run = True
-while run:
-    q = int(input("In: "))
-    if q == x:
-        print("Good")
-        run = False
-    elif q > x:
-        print(f"X < {q}")
-    else:
-        print(f"X > {q}")
-else:
-    print("asd")
+# if self.name_file.lower().find(".pdf") == 0:
+#     print(f"Пишу в файл: {self.name_file}")
+
+x = "Text.pdf"
+print(x)
+print(x.lower())
+print(x.lower().find(".pdf".lower()))
+# if x.lower()
