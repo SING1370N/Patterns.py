@@ -85,11 +85,6 @@ class Cook:
 
     @builder.setter
     def builder(self, builder: Cooking) -> None:
-        """
-        Директор работает с любым экземпляром строителя, который передаётся ему
-        клиентским кодом. Таким образом, клиентский код может изменить конечный
-        тип вновь собираемого продукта.
-        """
         self._builder = builder
 
     def cooking_pizza_home(self) -> None:
@@ -107,7 +102,6 @@ if __name__ == "__main__":
     инициирует процесс построения. Конечный результат извлекается из объекта-
     строителя.
     """
-
     cook = Cook()
     cooking = ConcreteCooking()
     cook.builder = cooking

@@ -10,23 +10,23 @@ class Menu:
         return Menu._instance
 
     def __init__(self):
-        self._servers = []
+        self._list = []
 
     def addObject(self, NameObj):
-        self._servers.append(NameObj)
+        self._list.append(NameObj)
 
     def addPackObject(self, Num=4):
-        for i in range(1, Num):
-            self._servers.append("Блюдо " + str(i))
+        for i in range(0, Num):
+            self._list.append("Блюдо " + str(i+1))
 
     def Example(self, Name="Чай"):
-        self._servers.pop()
-        self._servers.append(Name)
+        self._list.pop()
+        self._list.append(Name)
 
 def see(OBJ):
 
-    for i in range(len(OBJ._servers)):
-        print(" ", OBJ._servers[i])
+    for i in range(len(OBJ._list)):
+        print(" ", OBJ._list[i])
 
 
 if __name__ == "__main__":
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     T2 = Menu()
     T3 = Menu()
 
-    T1.addPackObject(6)
+    T1.addPackObject(3)
 
     print("Проверка меню 1:")
     see(T1)

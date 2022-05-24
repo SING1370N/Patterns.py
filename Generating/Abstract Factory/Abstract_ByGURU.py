@@ -64,12 +64,12 @@ class AbstractProductA(ABC):
 
 class ConcreteProductA1(AbstractProductA):
     def useful_function_a(self) -> str:
-        return "The result of the product A1."
+        return "The result of the ingredient A1."
 
 
 class ConcreteProductA2(AbstractProductA):
     def useful_function_a(self) -> str:
-        return "The result of the product A2."
+        return "The result of the ingredient A2."
 
 
 class AbstractProductB(ABC):
@@ -101,7 +101,7 @@ class AbstractProductB(ABC):
 """
 class ConcreteProductB1(AbstractProductB):
     def useful_function_b(self) -> str:
-        return "The result of the product B1."
+        return "The result of the ingredient B1."
 
     """
     Продукт B1 может корректно работать только с Продуктом A1. Тем не менее, он
@@ -115,7 +115,7 @@ class ConcreteProductB1(AbstractProductB):
 
 class ConcreteProductB2(AbstractProductB):
     def useful_function_b(self) -> str:
-        return "The result of the product B2."
+        return "The result of the ingredient B2."
 
     def another_useful_function_b(self, collaborator: AbstractProductA):
         """
