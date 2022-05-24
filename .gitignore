@@ -1,7 +1,10 @@
 # folder
+/Lib
+/Scripts
 /venv
 /.idea
 
 # files
 *.bkp
 *.dtmp
+/pyvenv.cfg
