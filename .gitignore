@@ -1,2 +1,7 @@
+# folder
 /venv
 /.idea
+
+# files
+*.bkp
+*.dtmp
