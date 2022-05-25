@@ -9,4 +9,5 @@
 *.dtmp
 /pyvenv.cfg
 a
+git.bat
 gitti
