@@ -6,7 +6,6 @@ class Command(ABC):
     """
     Интерфейс Команды объявляет метод для выполнения команд.
     """
-
     @abstractmethod
     def execute(self) -> None:
         pass
@@ -16,7 +15,6 @@ class SimpleCommand(Command):
     """
     Некоторые команды способны выполнять простые операции самостоятельно.
     """
-
     def __init__(self, payload: str) -> None:
         self._payload = payload
 
@@ -53,7 +51,6 @@ class Receiver:
     все виды операций, связанных с выполнением запроса. Фактически, любой класс
     может выступать Получателем.
     """
-
     @staticmethod
     def do_something(a: str) -> None:
         print(f"PC: Работая над ({a}.)")
