@@ -1,54 +1,67 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List
+from random import randint
 
 
-class Component(ABC):
+class Building(ABC):
     """
     Интерфейс Компонента объявляет метод accept, который в качестве аргумента
     может получать любой объект, реализующий интерфейс посетителя.
+
+    Каждый Конкретный Компонент должен реализовать метод accept таким образом,
+    чтобы он вызывал метод посетителя, соответствующий классу компонента.
     """
 
     @abstractmethod
     def accept(self, visitor: Visitor) -> None:
         pass
 
+    @abstractmethod
+    def type_building(self) -> None:
+        pass
 
-class ConcreteComponentA(Component):
-    """
-    Каждый Конкретный Компонент должен реализовать метод accept таким образом,
-    чтобы он вызывал метод посетителя, соответствующий классу компонента.
-    """
 
+class Home(Building):
     def accept(self, visitor: Visitor) -> None:
         """
-        Обратите внимание, мы вызываем visitConcreteComponentA, что
-        соответствует названию текущего класса. Таким образом мы позволяем
+        Обратите внимание, мы вызываем visit_home, что соответствует
+        названию текущего класса. Таким образом мы позволяем
         посетителю узнать, с каким классом компонента он работает.
         """
+        visitor.visit_home(self)
 
-        visitor.visit_concrete_component_a(self)
-
-    def exclusive_method_of_concrete_component_a(self) -> str:
-        """
-        Конкретные Компоненты могут иметь особые методы, не объявленные в их
-        базовом классе или интерфейсе. Посетитель всё же может использовать эти
-        методы, поскольку он знает о конкретном классе компонента.
-        """
-
-        return "A"
+    @staticmethod
+    def type_building():
+        return "Дом"
 
 
-class ConcreteComponentB(Component):
+class Factory(Building):
+    def accept(self, visitor: Visitor) -> None:
+        visitor.visit_factory(self)
+
+    @staticmethod
+    def type_building():
+        return "Фабрика"
+
+
+class Store(Building):
+    def accept(self, visitor: Visitor) -> None:
+        visitor.visit_store(self)
+
+    @staticmethod
+    def type_building():
+        return "Магазин"
+
     """
-    То же самое здесь: visitConcreteComponentB => ConcreteComponentB
+    Конкретные Компоненты могут иметь особые методы, не объявленные в их
+    базовом классе или интерфейсе. Посетитель всё же может использовать эти
+    методы, поскольку он знает о конкретном классе компонента.
     """
 
-    def accept(self, visitor: Visitor):
-        visitor.visit_concrete_component_b(self)
-
-    def special_method_of_concrete_component_b(self) -> str:
-        return "B"
+    @staticmethod
+    def buying(product: str) -> str:
+        return f"купил {product} на {randint(1,2000)} грн. {randint(0,99)} коп."
 
 
 class Visitor(ABC):
@@ -59,11 +72,15 @@ class Visitor(ABC):
     """
 
     @abstractmethod
-    def visit_concrete_component_a(self, element: ConcreteComponentA) -> None:
+    def visit_home(self, element: Home) -> None:
         pass
 
     @abstractmethod
-    def visit_concrete_component_b(self, element: ConcreteComponentB) -> None:
+    def visit_factory(self, element: Factory) -> None:
+        pass
+
+    @abstractmethod
+    def visit_store(self, element: Store) -> None:
         pass
 
 
@@ -78,42 +95,50 @@ class Visitor(ABC):
 """
 
 
-class ConcreteVisitor1(Visitor):
-    def visit_concrete_component_a(self, element) -> None:
-        print(f"{element.exclusive_method_of_concrete_component_a()} + ConcreteVisitor1")
+class Builder(Visitor):
+    _for_print = "посещён СТРОИТЕЛЕМ"
 
-    def visit_concrete_component_b(self, element) -> None:
-        print(f"{element.special_method_of_concrete_component_b()} + ConcreteVisitor1")
+    def visit_factory(self, element: Factory) -> None:
+        print(f"{element.type_building()}: {self._for_print}, время поработать")
 
+    def visit_home(self, element: Home) -> None:
+        print(f"{element.type_building()}: {self._for_print}")
 
-class ConcreteVisitor2(Visitor):
-    def visit_concrete_component_a(self, element) -> None:
-        print(f"{element.exclusive_method_of_concrete_component_a()} + ConcreteVisitor2")
-
-    def visit_concrete_component_b(self, element) -> None:
-        print(f"{element.special_method_of_concrete_component_b()} + ConcreteVisitor2")
+    def visit_store(self, element: Store) -> None:
+        print(f"{element.type_building()}: {self._for_print}, а так же {element.buying('стройматериалов')}")
 
 
-def client_code(components: List[Component], visitor: Visitor) -> None:
+class Student(Visitor):
+    _for_print = "посещён СТУДЕНТОМ"
+
+    def visit_factory(self, element: Factory) -> None:
+        print(f"{element.type_building()} {self._for_print} для практики")
+
+    def visit_home(self, element: Home) -> None:
+        print(f"{element.type_building()} {self._for_print}, время делать лабы")
+
+    def visit_store(self, element: Store) -> None:
+        print(f"{element.type_building()} {self._for_print}, а так же {element.buying('ручек и тетрадей')}")
+
+
+def client_code(components_list: List[Building], visitor: Visitor) -> None:
     """
     Клиентский код может выполнять операции посетителя над любым набором
     элементов, не выясняя их конкретных классов. Операция принятия направляет
     вызов к соответствующей операции в объекте посетителя.
     """
-
-    # ...
-    for component in components:
+    for component in components_list:
         component.accept(visitor)
-    # ...
 
 
 if __name__ == "__main__":
-    components = [ConcreteComponentA(), ConcreteComponentB()]
 
-    print("The client code works with all visitors via the base Visitor interface:")
-    visitor1 = ConcreteVisitor1()
-    client_code(components, visitor1)
+    print("Студент решает прогулятся:")
+    components = [Home(), Store(), Home()]
+    student = Student()
+    client_code(components, student)
 
-    print("It allows the same client code to work with different types of visitors:")
-    visitor2 = ConcreteVisitor2()
-    client_code(components, visitor2)
+    print("\nПосле получения профессии меняется маршрут:")
+    components = [Home(), Factory(), Store(), Home()]
+    builder = Builder()
+    client_code(components, builder)
