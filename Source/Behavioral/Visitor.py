@@ -32,7 +32,7 @@ class Home(Building):
         visitor.visit_home(self)
 
     @staticmethod
-    def type_building():
+    def type_building(**kwargs):
         return "Дом"
 
 
@@ -41,7 +41,7 @@ class Factory(Building):
         visitor.visit_factory(self)
 
     @staticmethod
-    def type_building():
+    def type_building(**kwargs):
         return "Фабрика"
 
 
@@ -50,7 +50,7 @@ class Store(Building):
         visitor.visit_store(self)
 
     @staticmethod
-    def type_building():
+    def type_building(**kwargs):
         return "Магазин"
 
     """
