@@ -1,13 +1,14 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from random import randrange
+from random import choice
 from typing import List
 
 
-class Subject(ABC):
+class Subscription(ABC):
     """
     Интферфейс издателя объявляет набор методов для управлениями подписчиками.
     """
+    _video: str = None
 
     @abstractmethod
     def attach(self, observer: Observer) -> None:
@@ -30,18 +31,12 @@ class Subject(ABC):
         """
         pass
 
+    @property
+    def video(self):
+        return self._video
 
-class ConcreteSubject(Subject):
-    """
-    Издатель владеет некоторым важным состоянием и оповещает наблюдателей о его
-    изменениях.
-    """
 
-    _state: int = None
-    """
-    Для удобства в этой переменной хранится состояние Издателя, необходимое всем
-    подписчикам.
-    """
+class YouTube(Subscription):
 
     _observers: List[Observer] = []
     """
@@ -49,11 +44,15 @@ class ConcreteSubject(Subject):
     более подробном виде (классифицируется по типу события и т.д.)
     """
 
+    def __init__(self):
+        print("Великий ютуб создан")
+
     def attach(self, observer: Observer) -> None:
-        print("Subject: Attached an observer.")
+        print(" - Подписка", observer)
         self._observers.append(observer)
 
     def detach(self, observer: Observer) -> None:
+        print(" - Отписка", observer)
         self._observers.remove(observer)
 
     """
@@ -64,23 +63,24 @@ class ConcreteSubject(Subject):
         """
         Запуск обновления в каждом подписчике.
         """
-
-        print("Subject: Notifying observers...")
+        print("Уведомление:")
+        numb_good_upd = 0
         for observer in self._observers:
-            observer.update(self)
+            if observer.update(self):
+                numb_good_upd += 1
+        if numb_good_upd == 0:
+            print(f"!!! Никто не подписан на это уведомление ({self._video})")
 
-    def some_business_logic(self) -> None:
+    def logic(self) -> None:
         """
         Обычно логика подписки – только часть того, что делает Издатель.
         Издатели часто содержат некоторую важную бизнес-логику, которая
         запускает метод уведомления всякий раз, когда должно произойти что-то
         важное (или после этого).
         """
-
-        print("\nSubject: I'm doing something important.")
-        self._state = randrange(0, 10)
-
-        print(f"Subject: My state has just changed to: {self._state}")
+        ytb_list = ["мультики", "дача", "фильмы", "песни"]
+        self._video = choice(ytb_list)
+        print(f"\n ----- Выход нового видео: {self._video} -----\n")
         self.notify()
 
 
@@ -89,9 +89,12 @@ class Observer(ABC):
     Интерфейс Наблюдателя объявляет метод уведомления, который издатели
     используют для оповещения своих подписчиков.
     """
+    @abstractmethod
+    def __str__(self):
+        pass
 
     @abstractmethod
-    def update(self, subject: Subject) -> None:
+    def update(self, subject: Subscription) -> bool:
         """
         Получить обновление от субъекта.
         """
@@ -104,32 +107,51 @@ class Observer(ABC):
 """
 
 
-class ConcreteObserverA(Observer):
-    def update(self, subject: Subject) -> None:
-        if subject._state < 3:
-            print("ConcreteObserverA: Reacted to the event")
+class Grandmother(Observer):
+    def __str__(self):
+        return "БАБУШКИ"
+
+    def update(self, sub: Subscription) -> bool:
+        ytb_list = ["дача", "фильмы", "песни"]
+        if sub.video in ytb_list:
+            print("Бабушке нравится новый выпуск про", sub.video)
+            return True
+        return False
 
 
-class ConcreteObserverB(Observer):
-    def update(self, subject: Subject) -> None:
-        if subject._state == 0 or subject._state >= 2:
-            print("ConcreteObserverB: Reacted to the event")
+class Grandson(Observer):
+    def __str__(self):
+        return "ВНУКА"
+
+    def update(self, sub: Subscription) -> bool:
+        ytb_list = ["мультики", "песни"]
+        if sub.video in ytb_list:
+            print("Внуку нравится новый выпуск про", sub.video)
+            return True
+        return False
 
 
 if __name__ == "__main__":
     # Клиентский код.
 
-    subject = ConcreteSubject()
+    youtube = YouTube()
 
-    observer_a = ConcreteObserverA()
-    subject.attach(observer_a)
+    grandm = Grandmother()
+    youtube.attach(grandm)
 
-    observer_b = ConcreteObserverB()
-    subject.attach(observer_b)
+    grans = Grandson()
+    youtube.attach(grans)
 
-    subject.some_business_logic()
-    subject.some_business_logic()
+    youtube.logic()
+    youtube.logic()
 
-    subject.detach(observer_a)
+    youtube.detach(grandm)
 
-    subject.some_business_logic()
+    youtube.logic()
+    youtube.logic()
+    youtube.logic()
+    youtube.logic()
+    youtube.logic()
+    youtube.logic()
+    youtube.logic()
+
