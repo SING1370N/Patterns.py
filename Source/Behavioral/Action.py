@@ -90,11 +90,11 @@ class Invoker:
         print("Начало простого:")
         if isinstance(self._on_start, Command):
             self._on_start.execute()
-        print(" --- выполнение ---\nКонец простого:")
+        print(" --- выполнение ---\nКонец простого")
         print("Начало сложного:")
         if isinstance(self._on_finish, Command):
             self._on_finish.execute()
-        print(" --- выполнение ---\nКонец сложного:")
+        print(" --- выполнение ---\nКонец сложного")
 
 
 if __name__ == "__main__":
