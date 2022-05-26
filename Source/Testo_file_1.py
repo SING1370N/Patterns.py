@@ -3,7 +3,7 @@ import json
 
 
 def prrr():
-    print("-----------------------------------")
+    print("------------------------------------")
 
 
 r = requests.get('https://v2.jokeapi.dev/joke/Any?type=single')
